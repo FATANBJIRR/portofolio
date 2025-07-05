@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+    h2 {
+      text-align: center;
+      color: #ff4f4f;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff4f4f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    .link {
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+      color: #bbb;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>  <!-- Firebase SDK -->  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>  <script>
+    // Ganti dengan konfigurasi Firebase milikmu
+    const firebaseConfig = {
+      apiKey: "AIzaSyBVhUO4aQzkB3IgmW1gCfS_9dIyIN28nLY",
+      authDomain: "https://project12-8b73c.firebaseapp.com",
+      projectId: "project12-8b73c",
+      storageBucket: "project12-8b73c.firebasestorage.app",
+      messagingSenderId: "21510446769",
+      appId: "1:21510446769:web:f0d8329d0106a5af53cc90"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  </script></head>
+<body>  <div class="container" id="login-form">
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div class="link" onclick="showRegister()">Belum punya akun? Daftar</div>
+    <div class="link" onclick="showForgot()">Lupa Password?</div>
+  </div>  <div class="container hidden" id="register-form">
+    <h2>Daftar</h2>
+    <input type="text" id="reg-username" placeholder="Email">
+    <input type="password" id="reg-password" placeholder="Password">
+    <button onclick="register()">Daftar</button>
+    <div class="link" onclick="showLogin()">Sudah punya akun? Login</div>
+  </div>  <div class="container hidden" id="forgot-form">
+    <h2>Lupa Password</h2>
+    <input type="text" id="forgot-username" placeholder="Email">
+    <button onclick="forgotPassword()">Reset Password</button>
+    <div class="link" onclick="showLogin()">Kembali ke Login</div>
+  </div>  <script>
+    const auth = firebase.auth();
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const forgotForm = document.getElementById('forgot-form');
+
+    function showLogin() {
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      forgotForm.classList.add('hidden');
+    }
+
+    function showRegister() {
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+      forgotForm.classList.add('hidden');
+    }
+
+    function showForgot() {
+      loginForm.classList.add('hidden');
+      registerForm.classList.add('hidden');
+      forgotForm.classList.remove('hidden');
+    }
+
+    function login() {
+      const email = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(user => alert("Login berhasil!"))
+        .catch(error => alert("Login gagal: " + error.message));
+    }
+
+    function register() {
+      const email = document.getElementById('reg-username').value;
+      const password = document.getElementById('reg-password').value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(user => alert("Pendaftaran berhasil!"))
+        .catch(error => alert("Error: " + error.message));
+    }
+
+    function forgotPassword() {
+      const email = document.getElementById('forgot-username').value;
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => alert("Link reset dikirim ke email!"))
+        .catch(error => alert("Error: " + error.message));
+    }
+  </script></body>
+</html>
